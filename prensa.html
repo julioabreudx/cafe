@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita de Café Prensa Francesa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* Layout Fixo: Foto Aconchegante */
+            background-image: url('https://images.unsplash.com/photo-1565946502924-293953532a20?q=80&w=1974&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .title-font {
+            font-family: 'Merriweather', serif;
+        }
+        .backdrop-blur-custom {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        /* Cores de café para os botões selecionados */
+        .radio-button:checked + label {
+            background-color: #78350f; /* amber-800 */
+            color: white;
+            border-color: #78350f; /* amber-800 */
+        }
+        .strength-button:checked + label {
+            background-color: #a16207; /* yellow-700 */
+            color: #292524; /* stone-800 */
+            border-color: #a16207; /* yellow-700 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div class="min-h-screen flex items-center justify-center p-4 bg-black bg-opacity-60">
+        <div class="w-full max-w-4xl bg-stone-900 bg-opacity-80 backdrop-blur-custom rounded-2xl shadow-2xl overflow-hidden md:flex">
+            
+            <!-- Seção de Controles (Esquerda) -->
+            <div class="p-8 md:w-1/2">
+                <h1 class="title-font text-3xl md:text-4xl font-bold text-amber-500 mb-2">Café Perfeito</h1>
+                <p class="text-lg text-stone-300 mb-8">Calculadora para Prensa Francesa</p>
+
+                <!-- Passo 1: Calcular por -->
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-3 text-amber-300">1. Calcular por:</h2>
+                    <div class="flex space-x-4">
+                        <div class="flex-1">
+                            <input type="radio" id="calc-by-beans" name="calculation_type" value="grãos" class="hidden radio-button" checked onchange="updateCalculation()">
+                            <label for="calc-by-beans" class="block w-full text-center p-3 rounded-lg border-2 border-stone-600 cursor-pointer transition-all duration-300 hover:bg-amber-900">Grãos (g)</label>
+                        </div>
+                        <div class="flex-1">
+                            <input type="radio" id="calc-by-water" name="calculation_type" value="água" class="hidden radio-button" onchange="updateCalculation()">
+                            <label for="calc-by-water" class="block w-full text-center p-3 rounded-lg border-2 border-stone-600 cursor-pointer transition-all duration-300 hover:bg-amber-900">Água (ml)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 2: Quantidade -->
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-3 text-amber-300">2. Quantidade</h2>
+                    <input type="number" id="amount" value="30" class="w-full p-3 bg-stone-800 border-2 border-stone-600 rounded-lg text-white text-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all" oninput="updateCalculation()">
+                </div>
+
+                <!-- Passo 3: Intensidade -->
+                <div>
+                    <h2 class="text-xl font-semibold mb-3 text-amber-300">3. Intensidade</h2>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <input type="radio" id="strength-weak" name="strength" value="fraco" class="hidden strength-button" onchange="updateCalculation()">
+                            <label for="strength-weak" class="block text-center p-3 rounded-lg border-2 border-stone-600 cursor-pointer transition-all duration-300 hover:bg-amber-800">Fraco</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="strength-medium" name="strength" value="médio" class="hidden strength-button" checked onchange="updateCalculation()">
+                            <label for="strength-medium" class="block text-center p-3 rounded-lg border-2 border-stone-600 cursor-pointer transition-all duration-300 hover:bg-amber-800">Médio</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="strength-strong" name="strength" value="forte" class="hidden strength-button" onchange="updateCalculation()">
+                            <label for="strength-strong" class="block text-center p-3 rounded-lg border-2 border-stone-600 cursor-pointer transition-all duration-300 hover:bg-amber-800">Forte</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Resultados (Direita) -->
+            <div class="p-8 md:w-1/2 bg-stone-950 bg-opacity-50">
+                <h2 class="title-font text-2xl font-bold text-amber-500 mb-4">Sua Receita</h2>
+                
+                <div class="bg-amber-500 bg-opacity-10 p-6 rounded-xl border-2 border-amber-500 border-opacity-50">
+                    <div class="flex justify-between items-center mb-4 pb-4 border-b border-amber-500 border-opacity-30">
+                        <span class="text-lg text-stone-200">Café em Grãos</span>
+                        <span id="result-coffee" class="text-2xl font-bold text-white">30 g</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg text-stone-200">Água Filtrada</span>
+                        <span id="result-water" class="text-2xl font-bold text-white">429 ml</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 space-y-4 text-stone-300">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Tempo de Infusão: <strong>4 minutos</strong></span>
+                    </div>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        <span>Moagem: <strong>Grossa</strong></span>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t border-stone-700">
+                     <h3 class="title-font text-xl font-bold text-amber-500 mb-3">Modo de Preparo</h3>
+                     <ol class="list-decimal list-inside space-y-2 text-stone-300">
+                         <li>Aqueça a água (não deixe ferver, ~95°C).</li>
+                         <li>Adicione o café moído na prensa.</li>
+                         <li>Despeje a água sobre o café e mexa.</li>
+                         <li>Coloque a tampa e espere os 4 minutos.</li>
+                         <li>Pressione o êmbolo lentamente. Sirva e aproveite!</li>
+                     </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função principal que é chamada sempre que um input muda
+        function updateCalculation() {
+            // Relação água (ml) por café (g) baseado na tabela
+            // CORREÇÃO: A chave "médio" agora corresponde ao valor do HTML
+            const ratios = {
+                fraco: 16.67, // 100ml / 6g
+                médio: 14.29, // 100ml / 7g
+                forte: 12.50  // 100ml / 8g
+            };
+
+            // Pega os valores dos inputs do HTML
+            const calculationType = document.querySelector('input[name="calculation_type"]:checked').value;
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const strength = document.querySelector('input[name="strength"]:checked').value;
+
+            // Pega o ratio correspondente à intensidade escolhida
+            const ratio = ratios[strength];
+
+            let coffeeAmount = 0;
+            let waterAmount = 0;
+
+            // Lógica do cálculo
+            if (calculationType === 'grãos') {
+                coffeeAmount = amount;
+                waterAmount = coffeeAmount * ratio;
+            } else { // calculationType === 'água'
+                waterAmount = amount;
+                coffeeAmount = waterAmount / ratio;
+            }
+
+            // Atualiza os elementos de resultado na tela
+            document.getElementById('result-coffee').textContent = `${coffeeAmount.toFixed(0)} g`;
+            document.getElementById('result-water').textContent = `${waterAmount.toFixed(0)} ml`;
+        }
+
+        // Chama a função uma vez no início para carregar os valores padrão
+        window.onload = function() {
+            updateCalculation();
+        };
+    </script>
+
+</body>
+</html>
